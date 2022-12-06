@@ -163,3 +163,4 @@ resource "aws_security_group" "DB-SG-SSH" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
