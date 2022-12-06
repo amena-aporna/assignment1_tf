@@ -1,10 +1,12 @@
-# Creating an AWS instance for the Webserver!
+# Creating an AWS instance Public for the Webserver!
 resource "aws_instance" "webserver" {
 
   depends_on = [
-    aws_vpc.custom,
-    aws_subnet.subnet1,
-    aws_subnet.subnet2,
+    aws_vpc.main,
+    aws_subnet.public_us_east_1a,
+    aws_subnet.public_us_east_1b,
+    aws_subnet.private_us_east_1a,
+    aws_subnet.private_us_east_1b,
     aws_security_group.BH-SG,
     aws_security_group.DB-SG-SSH
   ]
@@ -12,7 +14,7 @@ resource "aws_instance" "webserver" {
   # AMI ID 
   ami  = var.ami
   instance_type = "t2.micro"
-  subnet_id = aws_subnet.subnet1.id
+  subnet_id = aws_subnet.public_us_east_1a.id
 
   
   //key_name = "dbkp_tf"
@@ -65,7 +67,7 @@ EOF
 }
 
 
-# Creating an AWS instance for the MySQL! 
+# Creating an AWS instance Private for the MySQL! 
 resource "aws_instance" "MySQL" {
   depends_on = [
     aws_instance.webserver,
@@ -74,7 +76,7 @@ resource "aws_instance" "MySQL" {
 
   ami  = var.ami
   instance_type = "t2.micro"
-  subnet_id = aws_subnet.subnet2.id
+  subnet_id = aws_subnet.private_us_east_1a.id
 
   
   //key_name = "dbkp_tf"
@@ -93,12 +95,15 @@ resource "aws_instance" "MySQL" {
 resource "aws_instance" "Bastion-Host" {
    depends_on = [
     aws_instance.webserver,
-     aws_instance.MySQL
+     aws_instance.MySQL,
+     #aws_subnet.public_us_east_1a,
+     #aws_subnet.public_us_east_1b
   ]
   
   ami  = var.ami
   instance_type = "t2.micro"
-  subnet_id = aws_subnet.subnet1.id
+  subnet_id = aws_subnet.public_us_east_1a
+  #subnet_id = aws_subnet.public_us_east_1b
 
   
   //key_name = "MyKeyFinal"
@@ -109,5 +114,7 @@ resource "aws_instance" "Bastion-Host" {
    Name = "Bastion_Host_Terraform"
   }
 }
+
+
 
 
