@@ -24,7 +24,7 @@ resource "aws_subnet" "private_us_east_1b" {
 # Creating Public subnet!
 resource "aws_subnet" "public_us_east_1a" {
   vpc_id                  = aws_vpc.main.id
-  cidr_block              = "192.168.32.0/28"
+  cidr_block              = "192.168.16.32/28"
   availability_zone       = "us-east-1a"
  # Enabling automatic public IP assignment on instance launch! 
   map_public_ip_on_launch = true
@@ -36,7 +36,7 @@ resource "aws_subnet" "public_us_east_1a" {
 
 resource "aws_subnet" "public_us_east_1b" {
   vpc_id                  = aws_vpc.main.id
-  cidr_block              = "192.168.48.0/28"
+  cidr_block              = "192.168.16.48/28"
   availability_zone       = "us-east-1b"
  # Enabling automatic public IP assignment on instance launch! 
   map_public_ip_on_launch = true
