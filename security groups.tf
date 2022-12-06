@@ -1,4 +1,4 @@
-# Creating a Security Group for WordPress
+#Creating a Security Group for WordPress 
 resource "aws_security_group" "WS-SG" {
 
   depends_on = [
@@ -6,7 +6,7 @@ resource "aws_security_group" "WS-SG" {
     aws_subnet.public_us_east_1a,
     aws_subnet.public_us_east_1b,
     aws_subnet.private_us_east_1a,
-    aws_subnet.private_us_east_1b,
+    aws_subnet.private_us_east_1b
   ]
 
   description = "HTTP, PING, SSH"
@@ -100,7 +100,7 @@ resource "aws_security_group" "BH-SG" {
 
   depends_on = [
     aws_vpc.main,
-    aaws_subnet.public_us_east_1a,
+    aws_subnet.public_us_east_1a,
     aws_subnet.public_us_east_1b,
     aws_subnet.private_us_east_1a,
     aws_subnet.private_us_east_1b,
@@ -163,4 +163,3 @@ resource "aws_security_group" "DB-SG-SSH" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
-
