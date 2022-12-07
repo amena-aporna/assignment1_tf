@@ -28,14 +28,14 @@ resource "aws_instance" "webserver" {
    Name = "Webserver_From_Terraform"
   }
 
-  user_data = <<EOF
-    #!/bin/bash
-     yum update -y
-		 yum install -y httpd
-		 systemctl start httpd
-		 systemctl enable httpd
-		echo "<h1>Deployed via Terraform</h1>" | sudo tee /var/www/html/index.html
-	EOF
+  # user_data = <<EOF
+  #   #!/bin/bash
+  #    yum update -y
+	# 	 yum install -y httpd
+	# 	 systemctl start httpd
+	# 	 systemctl enable httpd
+	# 	echo "<h1>Deployed via Terraform</h1>" | sudo tee /var/www/html/index.html
+	# EOF
 
 }
 
@@ -64,6 +64,16 @@ resource "aws_instance" "MySQL" {
   tags = {
    Name = "MySQL_Terraform"
   }
+
+  user_data = <<EOF
+    #!/bin/bash
+     yum update -y
+		 yum install -y httpd
+		 systemctl start httpd
+		 systemctl enable httpd
+		echo "<h1>Deployed via Terraform</h1>" | sudo tee /var/www/html/index.html
+	EOF
+
 }
 
 
