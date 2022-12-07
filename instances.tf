@@ -16,6 +16,8 @@ resource "aws_instance" "webserver" {
   instance_type = "t2.micro"
   subnet_id = aws_subnet.public_us_east_1a.id
 
+  key_name = aws_key_pair.dbkp.key_name
+
   
   //key_name = "dbkp_tf"
   
@@ -26,18 +28,18 @@ resource "aws_instance" "webserver" {
    Name = "Webserver_From_Terraform"
   }
   
-  user_data = <<EOF
-#!/bin/bash
-sudo yum update -y
-sudo yum install php php-mysqlnd httpd -y
-wget https://wordpress.org/wordpress-4.8.14.tar.gz
-tar -xzf wordpress-4.8.14.tar.gz
-sudo cp -r wordpress /var/www/html/
-sudo chown -R apache.apache /var/www/html/
-sudo systemctl start httpd
-sudo systemctl enable httpd
-sudo systemctl restart httpd
-EOF
+#   user_data = <<EOF
+# #!/bin/bash
+# sudo yum update -y
+# sudo yum install php php-mysqlnd httpd -y
+# wget https://wordpress.org/wordpress-4.8.14.tar.gz
+# tar -xzf wordpress-4.8.14.tar.gz
+# sudo cp -r wordpress /var/www/html/
+# sudo chown -R apache.apache /var/www/html/
+# sudo systemctl start httpd
+# sudo systemctl enable httpd
+# sudo systemctl restart httpd
+# EOF
 
 #   # Installing required softwares into the system!
 #   connection {
@@ -78,6 +80,8 @@ resource "aws_instance" "MySQL" {
   instance_type = "t2.micro"
   subnet_id = aws_subnet.private_us_east_1a.id
 
+  key_name = aws_key_pair.dbkp.key_name
+
   
   //key_name = "dbkp_tf"
 
@@ -103,6 +107,8 @@ resource "aws_instance" "Bastion-Host" {
   ami  = var.ami
   instance_type = "t2.micro"
   subnet_id = aws_subnet.public_us_east_1a.id
+
+  key_name = aws_key_pair.dbkp.key_name
   
   
   //key_name = "MyKeyFinal"
