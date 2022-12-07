@@ -30,10 +30,10 @@ resource "aws_instance" "webserver" {
 
   user_data = <<EOF
     #!/bin/bash
-    sudo yum update
-		sudo yum install httpd
-		sudo systemctl start httpd
-		sudo systemctl enable httpd
+     yum update -y
+		 yum install -y httpd
+		 systemctl start httpd
+		 systemctl enable httpd
 		echo "<h1>Deployed via Terraform</h1>" | sudo tee /var/www/html/index.html
 	EOF
 
