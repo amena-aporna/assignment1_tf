@@ -1,4 +1,4 @@
-# Creating an AWS instance Public for the Webserver! zz
+# Creating an AWS instance Public for the Webserver! zzz
 resource "aws_instance" "webserver" {
 
   depends_on = [
