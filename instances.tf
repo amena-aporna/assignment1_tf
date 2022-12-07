@@ -27,42 +27,9 @@ resource "aws_instance" "webserver" {
   tags = {
    Name = "Webserver_From_Terraform"
   }
+
+  user_data = file("install_apache.sh")
   
-#   user_data = <<EOF
-# #!/bin/bash
-# sudo yum update -y
-# sudo yum install php php-mysqlnd httpd -y
-# wget https://wordpress.org/wordpress-4.8.14.tar.gz
-# tar -xzf wordpress-4.8.14.tar.gz
-# sudo cp -r wordpress /var/www/html/
-# sudo chown -R apache.apache /var/www/html/
-# sudo systemctl start httpd
-# sudo systemctl enable httpd
-# sudo systemctl restart httpd
-# EOF
-
-# ## Installing required softwares into the system!
-#   connection {
-#     type = ssh
-#     user = "ec2-user"
-#     private_key = file("/Users/harshitdawar/Github/AWS-CLI/MyKeyFinal.pem")
-#     host = aws_instance.webserver.public_us_east_1a
-#   }
-
-#   # Code for installing the softwares!
-#   provisioner "remote-exec" {
-#     inline = [
-#         "sudo yum update -y",
-#         "sudo yum install php php-mysqlnd httpd -y",
-#         "wget https://wordpress.org/wordpress-4.8.14.tar.gz",
-#         "tar -xzf wordpress-4.8.14.tar.gz",
-#         "sudo cp -r wordpress /var/www/html/",
-#         "sudo chown -R apache.apache /var/www/html/",
-#         "sudo systemctl start httpd",
-#         "sudo systemctl enable httpd",
-#         "sudo systemctl restart httpd"
-#     ]
-#   }
 }
 
 
