@@ -41,15 +41,12 @@ resource "aws_instance" "webserver" {
 # sudo systemctl restart httpd
 # EOF
 
-#   # Installing required softwares into the system!
+# ## Installing required softwares into the system!
 #   connection {
-#     type = "ssh"
-#     user = "root"
-#     key_name = aws_key_pair.dbkp.key_name
-#     # associate_public_ip_address = false
-
-#     # host = aws_instance.webserver.public_ip
-#     host = self.public_ip
+#     type = ssh
+#     user = "ec2-user"
+#     private_key = file("/Users/harshitdawar/Github/AWS-CLI/MyKeyFinal.pem")
+#     host = aws_instance.webserver.public_us_east_1a
 #   }
 
 #   # Code for installing the softwares!
@@ -67,6 +64,7 @@ resource "aws_instance" "webserver" {
 #     ]
 #   }
 }
+
 
 
 # Creating an AWS instance Private for the MySQL! 
