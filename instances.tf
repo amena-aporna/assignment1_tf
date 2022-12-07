@@ -80,7 +80,7 @@ resource "aws_instance" "MySQL" {
 # Creating an AWS instance for the Bastion Host, It should be launched in the public Subnet!
 resource "aws_instance" "Bastion-Host" {
    depends_on = [
-    aws_instance.webserver,
+     aws_instance.webserver,
      aws_instance.MySQL,
      #aws_subnet.public_us_east_1a,
      #aws_subnet.public_us_east_1b
