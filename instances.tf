@@ -28,11 +28,16 @@ resource "aws_instance" "webserver" {
   }
 
   user_data = <<EOF
-    #!/bin/bash
-     yum update -y
-     amazon-linux-extras install nginx1 -y 
-     systemctl enable nginx
-     systemctl start nginx
+    sudo yum update -y
+                sudo amazon-linux-extras install -y lamp-mariadb10.2-php7.2 php7.2
+                sudo yum install -y httpd mariadb-server
+                sudo systemctl start httpd
+                sudo systemctl enable httpd
+                sudo usermod -a -G apache ec2-user
+                sudo chown -R ec2-user:apache /var/www
+                sudo chmod 2775 /var/www && find /var/www -type d -exec sudo chmod 2775 {} \\;
+                find /var/www -type f -exec sudo chmod 0664 {} \\;
+                echo \"<?php phpinfo(); ?>\" > /var/www/html/index.php
 	EOF
 
 }
@@ -59,19 +64,19 @@ resource "aws_instance" "MySQL" {
   # Attaching 2 security groups here, 1 for the MySQL Database access by the Web-servers,
   # & other one for the Bastion Host access for applying updates & patches!
   vpc_security_group_ids = [aws_security_group.MySQL-SG.id, aws_security_group.DB-SG-SSH.id]
-  associate_public_ip_address = true 
+  associate_public_ip_address = false
 
   tags = {
    Name = "MySQL_Terraform"
   }
 
-  user_data = <<EOF
-    #!/bin/bash
-     yum update -y
-     amazon-linux-extras install nginx1 -y 
-     systemctl enable nginx
-     systemctl start nginx
-	EOF
+  # user_data = <<EOF
+  #   #!/bin/bash
+  #    yum update -y
+  #    amazon-linux-extras install nginx1 -y 
+  #    systemctl enable nginx
+  #    systemctl start nginx
+	# EOF
 
 }
 
