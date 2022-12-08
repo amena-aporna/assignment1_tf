@@ -19,8 +19,6 @@ resource "aws_instance" "webserver" {
   key_name = aws_key_pair.skp.key_name
 
   
-  //key_name = "dbkp_tf"
-  
   # Security groups to use!
   vpc_security_group_ids = [aws_security_group.WS-SG.id]
   associate_public_ip_address = true 
@@ -29,14 +27,13 @@ resource "aws_instance" "webserver" {
    Name = "Webserver_From_Terraform"
   }
 
-  # user_data = <<EOF
-  #   #!/bin/bash
-  #    yum update -y
-	# 	 yum install -y httpd
-	# 	 systemctl start httpd
-	# 	 systemctl enable httpd
-	# 	echo "<h1>Deployed via Terraform</h1>" | sudo tee /var/www/html/index.html
-	# EOF
+  user_data = <<EOF
+    #!/bin/bash
+    sudo yum update -y
+    sudo amazon-linux-extras install nginx1 -y 
+    sudo systemctl enable nginx
+    sudo systemctl start nginx
+	EOF
 
 }
 
@@ -70,11 +67,10 @@ resource "aws_instance" "MySQL" {
 
   user_data = <<EOF
     #!/bin/bash
-      sudo yum update -y
-      sudo amazon-linux-extras install nginx1 -y 
-      sudo systemctl enable nginx
-      sudo systemctl start nginx
-		echo "<h1>Deployed via Terraform</h1>" | sudo tee /var/www/html/index.html
+    sudo yum update -y
+    sudo amazon-linux-extras install nginx1 -y 
+    sudo systemctl enable nginx
+    sudo systemctl start nginx
 	EOF
 
 }
