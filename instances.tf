@@ -16,7 +16,7 @@ resource "aws_instance" "webserver" {
   instance_type = "t2.micro"
   subnet_id = aws_subnet.public_us_east_1a.id
 
-  key_name = aws_key_pair.key.key_name
+  key_name = aws_key_pair.skp.key_name
 
   
   //key_name = "dbkp_tf"
@@ -52,7 +52,7 @@ resource "aws_instance" "MySQL" {
   instance_type = "t2.micro"
   subnet_id = aws_subnet.private_us_east_1a.id
 
-  key_name = aws_key_pair.dbkp.key_name
+  key_name = aws_key_pair.skp.key_name
 
 
   
@@ -69,10 +69,10 @@ resource "aws_instance" "MySQL" {
 
   user_data = <<EOF
     #!/bin/bash
-     yum update -y
-		 yum install -y httpd
-		 systemctl start httpd
-		 systemctl enable httpd
+     sudo yum update -y
+		 sudo yum install -y httpd
+		 sudo systemctl start httpd
+		 sudo systemctl enable httpd
 		echo "<h1>Deployed via Terraform</h1>" | sudo tee /var/www/html/index.html
 	EOF
 
@@ -92,7 +92,7 @@ resource "aws_instance" "Bastion-Host" {
   instance_type = "t2.micro"
   subnet_id = aws_subnet.public_us_east_1a.id
 
-  key_name = aws_key_pair.dbkp.key_name
+  key_name = aws_key_pair.skp.key_name
   
   
   //key_name = "MyKeyFinal"
