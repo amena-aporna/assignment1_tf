@@ -121,8 +121,8 @@ resource "aws_lb_target_group_attachment" "attach-app1" {
 
 
 #creating load balancer
-resource "aws_lb" "front" {
-  name               = "front"
+resource "aws_lb" "lbfront" {
+  name               = "lbfront"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.alb_eg1.id]
@@ -139,7 +139,7 @@ resource "aws_lb" "front" {
 
 # listener checks for connection requests
 resource "aws_lb_listener" "front_end" {
-  load_balancer_arn = aws_lb.front.arn
+  load_balancer_arn = aws_lb.lbfront.arn
   port              = "80"
   protocol          = "HTTP"
 
