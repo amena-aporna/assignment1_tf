@@ -102,7 +102,7 @@ resource "aws_lb_target_group" "front" {
 
   health_check {
     enabled             = true
-    port                = "traffic port"
+    port                = 8081
     interval            = 30
     protocol            = "HTTP"
     path                = "/"
