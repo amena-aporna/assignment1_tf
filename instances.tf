@@ -23,6 +23,7 @@ resource "aws_instance" "webserver" {
   
   # Security groups to use!
   vpc_security_group_ids = [aws_security_group.WS-SG.id]
+  associate_public_ip_address = true 
 
   tags = {
    Name = "Webserver_From_Terraform"
