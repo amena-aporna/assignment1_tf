@@ -54,12 +54,14 @@ resource "aws_instance" "MySQL" {
 
   key_name = aws_key_pair.dbkp.key_name
 
+
   
   //key_name = "dbkp_tf"
 
   # Attaching 2 security groups here, 1 for the MySQL Database access by the Web-servers,
   # & other one for the Bastion Host access for applying updates & patches!
   vpc_security_group_ids = [aws_security_group.MySQL-SG.id, aws_security_group.DB-SG-SSH.id]
+  associate_public_ip_address = true 
 
   tags = {
    Name = "MySQL_Terraform"
