@@ -113,7 +113,7 @@ resource "aws_lb_target_group" "my_app_eg1" {
 }
 
 
-resource "aws_lb_target_group_attachment" "my_app_eg1" {
+resource "aws_lb_target_group_attachment" "altga" {
   depends_on = [
      aws_instance.webserver,
      aws_instance.MySQL,
@@ -121,13 +121,13 @@ resource "aws_lb_target_group_attachment" "my_app_eg1" {
      #aws_subnet.public_us_east_1b
   ]
   target_group_arn = aws_lb_target_group.my_app_eg1.arn
-  #target_id        = each.value.id
+  target_id        = aws_vpc.main.id
   port             = 8080
 }
 
 
-resource "aws_lb" "my_app_eg1" {
-  name               = "my-app-eg1"
+resource "aws_lb" "al" {
+  name               = "al"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.alb_eg1.id]
@@ -146,7 +146,7 @@ resource "aws_lb" "my_app_eg1" {
 
 
 resource "aws_lb_listener" "http_eg1" {
-  load_balancer_arn = aws_lb.my_app_eg1.arn
+  load_balancer_arn = aws_lb.al.arn
   port              = "80"
   protocol          = "HTTP"
 
