@@ -131,7 +131,7 @@ resource "aws_lb" "lbfront" {
     aws_subnet.private_us_east_1a.id,
     aws_subnet.private_us_east_1b.id
   ]
-  enable_deletion_protection = true 
+  enable_deletion_protection = false
   
 }
 
