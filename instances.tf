@@ -69,10 +69,10 @@ resource "aws_instance" "MySQL" {
 
   user_data = <<EOF
     #!/bin/bash
-     sudo yum update -y
-		 sudo yum install -y httpd
-		 sudo systemctl start httpd
-		 sudo systemctl enable httpd
+      sudo yum update -y
+      sudo amazon-linux-extras install nginx1 -y 
+      sudo systemctl enable nginx
+      sudo systemctl start nginx
 		echo "<h1>Deployed via Terraform</h1>" | sudo tee /var/www/html/index.html
 	EOF
 
