@@ -115,7 +115,7 @@ resource "aws_lb_target_group" "front" {
 # attaching target group to instances
 resource "aws_lb_target_group_attachment" "attach-app1" {
   target_group_arn = aws_lb_target_group.front.arn
-  target_id        = aws_instance.MySQL.id
+  target_ids        = [aws_instance.MySQL.id, aws_instance.webserver.id]
   port             = 80
 }
 
@@ -128,8 +128,8 @@ resource "aws_lb" "lbfront" {
   security_groups    = [aws_security_group.alb_eg1.id]
 
   subnets = [
-    aws_subnet.private_us_east_1a.id,
-    aws_subnet.private_us_east_1b.id
+    aws_subnet.public_us_east_1a.id,
+    aws_subnet.public_us_east_1b.id
   ]
   enable_deletion_protection = false
   
