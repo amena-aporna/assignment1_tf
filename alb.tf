@@ -115,7 +115,7 @@ resource "aws_lb_target_group" "front" {
 # attaching target group to instances
 resource "aws_lb_target_group_attachment" "attach-app1" {
   target_group_arn = aws_lb_target_group.front.arn
-  target_ids        = [aws_instance.MySQL.id, aws_instance.webserver.id]
+  target_id        = [aws_instance.MySQL.id, aws_instance.webserver.id]
   port             = 80
 }
 
