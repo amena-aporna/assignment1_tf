@@ -16,7 +16,7 @@ resource "aws_instance" "webserver" {
   instance_type = "t2.micro"
   subnet_id = aws_subnet.public_us_east_1a.id
 
-  key_name = aws_key_pair.dbkp.key_name
+  key_name = aws_key_pair.key.key_name
 
   
   //key_name = "dbkp_tf"
