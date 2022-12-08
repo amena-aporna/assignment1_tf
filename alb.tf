@@ -128,8 +128,8 @@ resource "aws_lb" "front" {
   security_groups    = [aws_security_group.alb_eg1.id]
 
   subnets = [
-    aws_subnet.private_us_east_1a,
-    aws_subnet.private_us_east_1b
+    aws_subnet.private_us_east_1a.id,
+    aws_subnet.private_us_east_1b.id
   ]
   enable_deletion_protection = true 
   
