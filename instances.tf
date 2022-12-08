@@ -29,10 +29,10 @@ resource "aws_instance" "webserver" {
 
   user_data = <<EOF
     #!/bin/bash
-    sudo yum update -y
-    sudo amazon-linux-extras install nginx1 -y 
-    sudo systemctl enable nginx
-    sudo systemctl start nginx
+     yum update -y
+     amazon-linux-extras install nginx1 -y 
+     systemctl enable nginx
+     systemctl start nginx
 	EOF
 
 }
@@ -67,10 +67,10 @@ resource "aws_instance" "MySQL" {
 
   user_data = <<EOF
     #!/bin/bash
-    sudo yum update -y
-    sudo amazon-linux-extras install nginx1 -y 
-    sudo systemctl enable nginx
-    sudo systemctl start nginx
+     yum update -y
+     amazon-linux-extras install nginx1 -y 
+     systemctl enable nginx
+     systemctl start nginx
 	EOF
 
 }
