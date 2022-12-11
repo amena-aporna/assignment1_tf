@@ -1,4 +1,4 @@
-#Creating a Security Group for WordPress 
+#Creating a Security Group for Webserver
 resource "aws_security_group" "WS-SG" {
 
   depends_on = [
@@ -13,13 +13,11 @@ resource "aws_security_group" "WS-SG" {
 
   # Name of the security Group!
   name = "webserver-sg"
-  
-  # VPC ID in which Security group has to be created!
   vpc_id = aws_vpc.main.id
 
   # Created an inbound rule for webserver access!
   ingress {
-    description = "HTTP for webserver"
+    description = "HTTP"
     from_port   = 80
     to_port     = 80
 
@@ -48,7 +46,7 @@ resource "aws_security_group" "WS-SG" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # Outward Network Traffic for the WordPress
+  # Outward Network Traffic for the Webserver
   egress {
     description = "output from webserver"
     from_port   = 0
@@ -57,6 +55,7 @@ resource "aws_security_group" "WS-SG" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
 
 
 # Creating security group for MySQL
@@ -71,7 +70,7 @@ resource "aws_security_group" "MySQL-SG" {
     aws_security_group.WS-SG
   ]
 
-  description = "MySQL Access only from the Webserver Instances!"
+  description = "MySQL access only from the Webserver Instances!"
   name = "mysql-sg"
   vpc_id = aws_vpc.main.id
 
@@ -86,77 +85,6 @@ resource "aws_security_group" "MySQL-SG" {
 
   egress {
     description = "output from MySQL"
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
-
-
-
-# Creating security group for Bastion Host/Jump Box
-resource "aws_security_group" "BH-SG" {
-
-  depends_on = [
-    aws_vpc.main,
-    aws_subnet.public_us_east_1a,
-    aws_subnet.public_us_east_1b,
-    aws_subnet.private_us_east_1a,
-    aws_subnet.private_us_east_1b,
-  ]
-
-  description = "MySQL Access only from the Webserver Instances!"
-  name = "bastion-host-sg"
-  vpc_id = aws_vpc.main.id
-
-  # Created an inbound rule for Bastion Host SSH
-  ingress {
-    description = "Bastion Host SG"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    description = "output from Bastion Host"
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
-
-
-
-# Creating security group for MySQL Bastion Host Access
-resource "aws_security_group" "DB-SG-SSH" {
-
-  depends_on = [
-    aws_vpc.main,
-    aws_subnet.public_us_east_1a,
-    aws_subnet.public_us_east_1b,
-    aws_subnet.private_us_east_1a,
-    aws_subnet.private_us_east_1b,
-    aws_security_group.BH-SG
-  ]
-
-  description = "MySQL Bastion host access for updates!"
-  name = "mysql-sg-bastion-host"
-  vpc_id = aws_vpc.main.id
-
-  # Created an inbound rule for MySQL Bastion Host
-  ingress {
-    description = "Bastion Host SG"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    security_groups = [aws_security_group.BH-SG.id]
-  }
-
-  egress {
-    description = "output from MySQL BH"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
