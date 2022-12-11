@@ -2,80 +2,28 @@
  resource "aws_security_group" "alb_eg1" {
    name   = "alb-eg1"
    vpc_id = aws_vpc.main.id
+
+  ingress {
+    description      = "HTTP from anywhere"
+    from_port        = 80
+    to_port          = 80
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "allow_http"
+  }
  }
 
 
-# resource "aws_security_group_rule" "ingress_ec2_traffic" {
-#   type                     = "ingress"
-#   from_port                = 8080
-#   to_port                  = 8080
-#   protocol                 = "tcp"
-#   security_group_id        = aws_security_group.ec2_eg1.id
-#   source_security_group_id = aws_security_group.alb_eg1.id
-# }
-
-# resource "aws_security_group_rule" "ingress_ec2_health_check" {
-#   type                     = "ingress"
-#   from_port                = 8081
-#   to_port                  = 8081
-#   protocol                 = "tcp"
-#   security_group_id        = aws_security_group.ec2_eg1.id
-#   source_security_group_id = aws_security_group.alb_eg1.id
-# }
-
-# resource "aws_security_group_rule" "full_egress_ec2" {
-#   type              = "egress"
-#   from_port         = 0
-#   to_port           = 0
-#   protocol          = "-1"
-#   security_group_id = aws_security_group.ec2_eg1.id
-#   cidr_blocks       = ["0.0.0.0/0"]
-# }
-
-
-
-# resource "aws_security_group_rule" "ingress_alb_traffic" {
-#   type              = "ingress"
-#   from_port         = 80
-#   to_port           = 80
-#   protocol          = "tcp"
-#   security_group_id = aws_security_group.alb_eg1.id
-#   cidr_blocks       = ["0.0.0.0/0"]
-# }
-
-# resource "aws_security_group_rule" "egress_alb_traffic" {
-#   type                     = "egress"
-#   from_port                = 8080
-#   to_port                  = 8080
-#   protocol                 = "tcp"
-#   security_group_id        = aws_security_group.alb_eg1.id
-#   source_security_group_id = aws_security_group.ec2_eg1.id
-# }
-
-# resource "aws_security_group_rule" "egress_alb_health_check" {
-#   type                     = "egress"
-#   from_port                = 8081
-#   to_port                  = 8081
-#   protocol                 = "tcp"
-#   security_group_id        = aws_security_group.alb_eg1.id
-#   source_security_group_id = aws_security_group.ec2_eg1.id
-# }
-
-
-# resource "aws_instance" "my_app_eg1" {
-#   for_each = local.web_servers
-
-#   ami           = "ami-0b0dcb5067f052a63"
-#   instance_type = each.value.machine_type
-#   key_name      = "dbkp_tf"
-#   subnet_id     = each.value.subnet_id
-
-#   vpc_security_group_ids = [aws_security_group.ec2_eg1.id]
-
-#   tags = {
-#     Name = each.key
-#   }
-# }
 
 #create target group
 resource "aws_lb_target_group" "front" {
@@ -83,14 +31,7 @@ resource "aws_lb_target_group" "front" {
   port       = 80
   protocol   = "HTTP"
   vpc_id     = aws_vpc.main.id
-   slow_start = 0
-
-   load_balancing_algorithm_type = "round_robin"
-
-  # stickiness {
-  #   enabled = false
-  #   type    = "lb_cookie"
-  # }
+  
 
   health_check {
     enabled             = true
@@ -107,7 +48,7 @@ resource "aws_lb_target_group" "front" {
 # attaching target group to instances
 resource "aws_lb_target_group_attachment" "attach-app1" {
   target_group_arn = aws_lb_target_group.front.arn
-  target_id        = aws_instance.webserver.id
+  target_ids        = [aws_instance.webserver.id,aws_instance.MySQL.id]
   port             = 80
 }
 
