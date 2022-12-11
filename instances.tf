@@ -1,15 +1,6 @@
 # Creating an AWS instance Public for the Webserver!
 resource "aws_instance" "webserver" {
 
-  depends_on = [
-    aws_vpc.main,
-    aws_subnet.public_us_east_1a,
-    aws_subnet.public_us_east_1b,
-    aws_subnet.private_us_east_1a,
-    aws_subnet.private_us_east_1b,
-  ]
-
-
   # AMI ID 
   ami  = var.ami
   instance_type = "t2.micro"
@@ -36,17 +27,21 @@ resource "aws_instance" "webserver" {
      
 	EOF
 
+  depends_on = [
+    aws_vpc.main,
+    aws_subnet.public_us_east_1a,
+    aws_subnet.public_us_east_1b,
+    aws_subnet.private_us_east_1a,
+    aws_subnet.private_us_east_1b,
+  ]
+
 }
 
 
 
 # Creating an AWS instance Private for the MySQL! 
 resource "aws_instance" "MySQL" {
-  depends_on = [
-    aws_instance.webserver,
-  ]
-
-
+  
   ami  = var.ami
   instance_type = "t2.micro"
   subnet_id = aws_subnet.private_us_east_1a.id
@@ -60,6 +55,10 @@ resource "aws_instance" "MySQL" {
   tags = {
    Name = "MySQL_Terraform"
   }
+
+  depends_on = [
+    aws_instance.webserver,
+  ]
 
 }
 
