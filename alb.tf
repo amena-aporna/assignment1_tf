@@ -1,12 +1,4 @@
-#new alb
-
-
-
-# resource "aws_security_group" "ec2_eg1" {
-#   name   = "ec2-eg1"
-#   vpc_id = aws_vpc.main.id
-# }
-
+# sg for alb
  resource "aws_security_group" "alb_eg1" {
    name   = "alb-eg1"
    vpc_id = aws_vpc.main.id
@@ -91,9 +83,9 @@ resource "aws_lb_target_group" "front" {
   port       = 80
   protocol   = "HTTP"
   vpc_id     = aws_vpc.main.id
-  # slow_start = 0
+   slow_start = 0
 
-  # load_balancing_algorithm_type = "round_robin"
+   load_balancing_algorithm_type = "round_robin"
 
   # stickiness {
   #   enabled = false
@@ -116,7 +108,6 @@ resource "aws_lb_target_group" "front" {
 resource "aws_lb_target_group_attachment" "attach-app1" {
   target_group_arn = aws_lb_target_group.front.arn
   target_id        = aws_instance.webserver.id
-  
   port             = 80
 }
 
@@ -132,7 +123,6 @@ resource "aws_lb" "lbfront" {
     aws_subnet.public_us_east_1a.id,
     aws_subnet.public_us_east_1b.id
   ]
-  enable_deletion_protection = false
   
 }
 
