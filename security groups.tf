@@ -1,3 +1,5 @@
+
+
 #Creating a Security Group for Webserver
 resource "aws_security_group" "WS-SG" {
 
@@ -81,6 +83,7 @@ resource "aws_security_group" "MySQL-SG" {
     to_port     = 8080
     protocol    = "tcp"
     security_groups = [aws_security_group.WS-SG.id]
+    
   }
 
   egress {
