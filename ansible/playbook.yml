@@ -1,0 +1,15 @@
+- hosts: all
+  gather_facts: False
+
+  vars:
+   - MyMessage: "Welcome to Ansible world!"
+
+  pre_tasks:
+  - name: install python 2
+    raw: test -e /usr/bin/python || (yum -y update && yum install -y python-minimal)
+
+  tasks:
+   - name: Nginx setup
+     apt: pkg=nginx state=installed update_cache=true
+   - name: index.html copy
+     template: src=index.html.j2 dest=/usr/share/nginx/html/index.html
