@@ -51,7 +51,8 @@ resource "aws_instance" "MySQL" {
   # Attaching 2 security groups here, 1 for the MySQL Database access by the Web-servers,
   # & other one for the Bastion Host access for applying updates & patches!
   vpc_security_group_ids = [aws_security_group.MySQL-SG.id]
-  
+  associate_public_ip_address = true 
+
   tags = {
    Name = "MySQL_Terraform"
   }
