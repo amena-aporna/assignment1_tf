@@ -17,15 +17,15 @@ resource "aws_instance" "webserver" {
    Name = "Webserver_Terraform"
   }
 
-  user_data = <<EOF
+  # user_data = <<EOF
 
-    #!/bin/bash
-    sudo yum update -y
-    sudo amazon-linux-extras install nginx1 -y 
-    sudo systemctl enable nginx
-    sudo systemctl start nginx
+  #   #!/bin/bash
+  #   sudo yum update -y
+  #   sudo amazon-linux-extras install nginx1 -y 
+  #   sudo systemctl enable nginx
+  #   sudo systemctl start nginx
      
-	EOF
+	# EOF
 
   depends_on = [
     aws_vpc.main,
