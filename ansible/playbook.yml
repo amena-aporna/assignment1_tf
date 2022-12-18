@@ -1,17 +1,39 @@
 - hosts: all
-  gather_facts: False
+  gather_facts: True
+  become: true
 
   vars:
-   - MyMessage: "Welcome to Ansible world!"
-
-  pre_tasks:
-  - name: install python 2
-    raw: test -e /usr/bin/python || (yum -y update && yum install -y python-minimal)
+    - MyMessage: "Welcome to Ansible world!"
+    - Package_Name: "nginx"
 
   tasks:
-   - name: Nginx setup
-     yum: pkg=nginx state=installed update_cache=true
-   - name: index.html copy
-     template: 
-        src: index.html.j2 
+    - name: install pre-req
+      package:
+        name: yum-utils
+        state: present
+        update_cache: true
+
+    - name: install yum repo
+      copy:
+        src: files/nginx.repo
+        dest: /etc/yum.repos.d/nginx.repo
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Nginx setup
+      package:
+        name: "{{ Package_Name }}"
+        state: present
+        update_cache: true
+
+    - name: index.html copy
+      template:
+        src: templates/index.html.j2
         dest: /usr/share/nginx/html/index.html
+
+    - name: start nginx service
+      systemd:
+        name: nginx
+        state: restarted
+        enabled: true
