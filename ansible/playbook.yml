@@ -29,7 +29,7 @@
 
     - name: index.html copy
       template:
-        src: templates/index.html.j2
+        src: index.html.j2
         dest: /usr/share/nginx/html/index.html
   
   handlers:
