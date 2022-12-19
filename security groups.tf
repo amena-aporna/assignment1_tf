@@ -85,6 +85,15 @@ resource "aws_security_group" "MySQL-SG" {
   #   security_groups = [aws_security_group.WS-SG.id]
     
   # }
+  ingress {
+    description = "HTTP"
+    from_port   = 80
+    to_port     = 80
+
+    # Here adding tcp instead of http, because http in part of tcp only!
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
   
   # Created an inbound rule for SSH
@@ -95,8 +104,8 @@ resource "aws_security_group" "MySQL-SG" {
 
     # Here adding tcp instead of ssh, because ssh in part of tcp only!
     protocol    = "tcp"
-    #cidr_blocks = ["0.0.0.0/0"]
-    security_groups = [aws_security_group.WS-SG.id]
+    cidr_blocks = ["0.0.0.0/0"]
+    #security_groups = [aws_security_group.WS-SG.id]
   }
 
   egress {
