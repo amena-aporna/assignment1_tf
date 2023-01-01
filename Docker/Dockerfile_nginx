@@ -1,0 +1,26 @@
+#OS image for container as base image
+FROM nginx:latest
+
+#update pkg manager and install webserver
+RUN yum update && yum install nginx -y
+
+#moves index.html file to nginx web file directory
+#COPY ./index.html /usr/share/nginx/html/index.html
+COPY index.html /usr/share/nginx/html
+
+#Sets working directory for html file
+WORKDIR /usr/share/nginx/html
+
+#web server listens on port 80, to open we declare container port
+EXPOSE 80
+
+#Place date and time at end of web page html file.
+RUN date +"%A, %b %d, %Y %H:%M:%S" >> /usr/share/nginx/html/index.html
+
+
+# FROM nginx
+# COPY index.html /usr/share/nginx/html
+# EXPOSE 8080
+
+
+
